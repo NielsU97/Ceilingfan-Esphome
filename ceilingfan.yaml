@@ -1,0 +1,59 @@
+esphome:
+  name: ceilingfan
+  friendly_name: ceilingfan
+  includes: 
+    - ceilingfan.h
+  libraries: 
+    - https://github.com/crankyoldgit/IRremoteESP8266  # IRremoteESP8266 includes IRsend
+
+esp8266:
+  board: esp01_1m
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "eHT6xhACNDcCUGul3ViKfS0yrtrBQGBamgcbpHy4DaQ="
+
+ota:
+  password: "94c97283f16faa1bf855f4d84ff88230"
+  
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Ceilingfan Fallback Hotspot"
+    password: "VzHmVC8h7m5q"
+
+captive_portal:
+switch:
+  - platform: template
+    name: "light"
+    turn_on_action:
+     - lambda: |-
+          sendLight();
+  - platform: template
+    name: "off"
+    turn_on_action:
+     - lambda: |-
+          sendFanOff();
+  - platform: template
+    name: "low"
+    turn_on_action:
+     - lambda: |-
+          sendFanLow();
+  - platform: template
+    name: "medium"
+    turn_on_action:
+     - lambda: |-
+          sendFanMedium();
+  - platform: template
+    name: "high"
+    turn_on_action:
+     - lambda: |-
+          sendFanHigh();
+          
